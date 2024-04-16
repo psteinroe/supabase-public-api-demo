@@ -1,0 +1,16 @@
+{
+  "name": "supabase",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "scripts": {
+    "generate": "supabase gen types typescript --local > ./src/database.ts",
+    "start": "(supabase status || supabase start -x deno-relay --ignore-health-check)",
+    "reset": "(supabase db reset --debug || supabase start -x deno-relay --ignore-health-check --debug)",
+    "reset:debug": "(supabase db reset --debug || supabase start -x deno-relay --ignore-health-check)",
+    "deploy": "supabase link --project-ref $SUPABASE_PROJECT_REF && supabase db push --debug"
+  },
+  "devDependencies": {
+    "supabase": "beta"
+  }
+}

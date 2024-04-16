@@ -1,0 +1,22 @@
+{
+  "name": "supabase-public-api-demo",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "supabase"
+  ],
+  "scripts": {
+    "turbo": "turbo",
+    "build": "turbo run build --output-logs=new-only",
+    "deploy": "turbo run deploy --output-logs=new-only",
+    "check": "biome check apps/** packages/**",
+    "check:apply": "biome check --apply apps/** packages/**",
+    "typecheck": "turbo run typecheck --output-logs=new-only"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@biomejs/biome": "1.7.0"
+  }
+}

@@ -1,56 +1,6 @@
-create role tokenauthed nologin noinherit;
-
--- configure default grants for the tokenauthed role
--- to be similar to those for `authenticated`
+create role tokenauthed;
 grant tokenauthed to authenticator;
-
-grant tokenauthed to postgres;
-
-alter default privileges in schema public grant all on tables to tokenauthed;
-
-alter default privileges in schema public grant all on functions to tokenauthed;
-
-alter default privileges in schema public grant all on sequences to tokenauthed;
-
-grant usage on schema public to tokenauthed;
-
-grant all on all tables in schema public to tokenauthed;
-
-grant all on all functions in schema public to tokenauthed;
-
-grant all on all sequences in schema public to tokenauthed;
-
-alter default privileges in schema private grant all on tables to tokenauthed;
-
-alter default privileges in schema private grant all on functions to tokenauthed;
-
-alter default privileges in schema private grant all on sequences to tokenauthed;
-
-grant usage on schema private to tokenauthed;
-
-grant all on all tables in schema private to tokenauthed;
-
-grant all on all functions in schema private to tokenauthed;
-
-grant all on all sequences in schema private to tokenauthed;
-
-grant usage on schema extensions to tokenauthed;
-
-grant usage on schema auth to tokenauthed;
-
-grant usage on schema storage to tokenauthed;
-
-alter default privileges in schema storage grant all on tables to tokenauthed;
-
-alter default privileges in schema storage grant all on functions to tokenauthed;
-
-alter default privileges in schema storage grant all on sequences to tokenauthed;
-
-grant all on all tables in schema storage to tokenauthed;
-
-grant all on all functions in schema storage to tokenauthed;
-
-grant all on all sequences in schema storage to tokenauthed;
+grant anon to tokenauthed;
 
 alter role tokenauthed set statement_timeout = '8s';
 

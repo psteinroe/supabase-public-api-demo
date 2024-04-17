@@ -40,23 +40,24 @@ app.all(
 
     const upstreamUrl = `${c.env.SUPABASE_URL}/rest/v1/${c.req.param("table")}${searchParams}`;
 
-    return fetch(upstreamUrl, {
-      body: ["GET", "HEAD"].includes(c.req.method)
-        ? undefined
-        : await c.req.text(),
-      method: c.req.method,
-      headers: {
-        ...c.req.header(),
-        apiKey: c.env.SUPABASE_ANON_KEY,
-        ...(c.req.query("select")
-          ? {
-              Prefer: [c.req.header("Prefer"), "return=representation"]
-                .filter(Boolean)
-                .join(","),
-            }
-          : {}),
-      },
-    });
+    const newRequest = new Request(upstreamUrl, c.req.raw);
+    newRequest.headers.set("apiKey", c.env.SUPABASE_ANON_KEY);
+    if (["GET", "HEAD"].includes(c.req.method)) {
+      newRequest.headers.set("Accept-Profile", "api");
+    } else {
+      newRequest.headers.set("Content-Profile", "api");
+    }
+    if (c.req.query("select")) {
+      newRequest.headers.set(
+        "Prefer",
+        [c.req.header("Prefer"), "return=representation"]
+          .filter(Boolean)
+          .join(","),
+      );
+    }
+    const res = await fetch(newRequest);
+    const newResponse = new Response(res.body, res);
+    return newResponse;
   },
 );
 

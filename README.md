@@ -50,7 +50,7 @@ create policy employee_all on contact to authenticated using (
 );
 ```
 
-## Setup API Tokens
+### Setup API Tokens
 
 We will manage and create api tokens right within our database, and use Row-Level-Security to define what the api token can do. The first step is to create a role `tokenauthed` that can be used to authenticate with the database. It should behave like the `authenticated` role.
 
@@ -60,7 +60,7 @@ grant tokenauthed to authenticator;
 grant anon to tokenauthed;
 ```
 
-## Create the API Token Table
+### Create the API Token Table
 
 We store references to api tokens in a table. Note that the key itself is not stored. Employees should be able to manage tokens.
 
@@ -80,7 +80,7 @@ create policy employee_all on api_token to authenticated using (
 );
 ```
 
-## Allow users to actually create a token
+### Allow users to actually create a token
 
 To actually create the api tokens we need to mint our own jwt tokens. We will use the `pgjwt` extension for this. Luckily, its ready to install on our Supabase instance.
 
@@ -113,7 +113,7 @@ end;
 $token$ security invoker language plpgsql;
 ```
 
-## Update Row-Level-Security Policies
+### Update Row-Level-Security Policies
 
 First, we add a function to extract the `tid` from the jwt token, similar to `auth.uid()`.
 
@@ -159,7 +159,7 @@ create policy employee_tokenauthed_all on contact to authenticated, tokenauthed 
 );
 ```
 
-## Create the API Schema
+### Create the API Schema
 
 To control what tables and columns should be exposed, we create a separate `api` schema. This separates our internal data model from the data model exposed in our public api.
 
@@ -197,8 +197,6 @@ Our little proxy will be a very simple Cloudflare Worker using Hono. You can cho
 ```shell
 bunx create-hono api-proxy
 ```
-
-## The Route Handler
 
 First, setup a JWT middleware to verify the incoming request. You can find the JWT secret in your Supabase Dashboard.
 
